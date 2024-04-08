@@ -1,0 +1,19 @@
+{
+  "name": "black.js",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch ./index.ts"
+  },
+  "devDependencies": {
+    "@freitasdev/eslint-config": "^2.1.0",
+    "@types/bun": "latest",
+    "@types/figlet": "^1.5.8"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "figlet": "^1.7.0"
+  }
+}
