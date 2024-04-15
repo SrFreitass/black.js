@@ -3,7 +3,7 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "dev": "bun --watch ./index.ts"
+    "dev": "--watch ./src/app/server.ts"
   },
   "devDependencies": {
     "@freitasdev/eslint-config": "^2.1.0",

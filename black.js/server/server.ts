@@ -1,4 +1,4 @@
-import type { Server } from "bun";
+import { type Server } from "bun";
 import figlet from "figlet";
 import { BlackRouter } from "../router/router";
 
@@ -15,9 +15,28 @@ export class BlackServer extends BlackRouter {
       fetch(req) {
         const method = req.method;
         const path = new URL(req.url);
-        const route = routers[path.pathname];
+        const pathnameSplited = path.pathname.split("/");
+        let route = null;
+
+        if (routers[path.pathname]) {
+          route = routers[path.pathname];
+          req = {
+            params: {
+              [route.searchParams || ""]:
+                pathnameSplited[pathnameSplited.length - 1],
+            },
+            ...req,
+          };
+        }
+
+        route =
+          routers[
+            `/${pathnameSplited[pathnameSplited.length - 2]}/searchParams`
+          ];
 
         if (route && route.method === method) {
+          console.log(route.searchParams);
+
           if (route.middleware) {
             const next = () => {
               return route.func(req);
