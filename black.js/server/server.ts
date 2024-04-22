@@ -1,6 +1,7 @@
 import { type Server } from "bun";
 import figlet from "figlet";
 import { BlackRouter } from "../router/router";
+import type { BlackRequest, RouteType, RouterParam } from "../@type/type";
 
 export class BlackServer extends BlackRouter {
   private server: Server;
@@ -15,37 +16,52 @@ export class BlackServer extends BlackRouter {
       fetch(req) {
         const method = req.method;
         const path = new URL(req.url);
-        const pathnameSplited = path.pathname.split("/");
-        let route = null;
+        const pathnameSplit = path.pathname.split("/");
+        let route = routers[path.pathname]
 
-        if (routers[path.pathname]) {
-          route = routers[path.pathname];
+        if (route) {
           req = {
-            params: {
-              [route.searchParams || ""]:
-                pathnameSplited[pathnameSplited.length - 1],
-            },
             ...req,
-          };
+          } as BlackRequest;
         }
 
-        route =
-          routers[
-            `/${pathnameSplited[pathnameSplited.length - 2]}/searchParams`
-          ];
+        console.log(route)
 
-        if (route && route.method === method) {
+        if(!route) {
+          console.log(pathnameSplit, routers)
+
+          route =
+            routers[
+              `/${pathnameSplit[pathnameSplit.length - 2]}/searchParams`
+            ];
+
+            if(route) {
+              req = {
+                params: {
+                  [route.searchParams?.params as string]: pathnameSplit[pathnameSplit.length - 1]
+                },
+                ...req
+              } as BlackRequest
+            } else {
+              return new Response(`Not found route in ${this.hostname}:${port}`);
+            }    
+        }
+
+        if (route.method === method) {
           console.log(route.searchParams);
 
           if (route.middleware) {
             const next = () => {
-              return route.func(req);
+              return route.func(req as BlackRequest);
             };
 
-            return route.middleware(req, next);
+            
+            const middleware = route.middleware(req as BlackRequest, next)
+
+            return middleware instanceof Response ? middleware : new Response("Return a response object (Black.js)");
           }
 
-          return route.func(req);
+          return route.func(req as BlackRequest);
         }
 
         return new Response(`Not found route in ${this.hostname}:${port}`);

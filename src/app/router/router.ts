@@ -3,7 +3,9 @@ import getBookController from "../controller/getBook.controller";
 
 class Router {
   execute(route: RouterParam) {
-    route.get("/book", getBookController.execute);
+    route.get("/book/:id", getBookController.execute, (req, next) => {
+      return next();
+    });
   }
 }
 

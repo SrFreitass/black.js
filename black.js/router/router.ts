@@ -1,15 +1,10 @@
-import type { RouterParam } from "../@type/type";
+import type { BlackRequest, RouteType, RouterParam } from "../@type/type";
+import { setParams } from "./setParams";
+
+
 
 export class BlackRouter {
-  protected routers: Record<
-    string,
-    {
-      method: string;
-      func: (request: Request) => Response;
-      middleware?: (req: Request, next: () => Response) => Response;
-      searchParams?: string;
-    }
-  > = {};
+  protected routers: RouteType = {};
 
   router(func: (routerMethods: RouterParam) => void) {
     const router = {
@@ -26,74 +21,73 @@ export class BlackRouter {
 
   get(
     path: string,
-    func: (request: Request) => Response,
-    middleware?: (req: Request, next: () => Response) => Response,
+    func: (request: BlackRequest) => Response,
+    middleware?: (req: BlackRequest, next: () => Response) => Response,
   ) {
-    let searchParams = "";
+    const params = setParams(path)
 
-    if (path.includes(":")) {
-      const pathSplited = path.split(":");
-      searchParams = pathSplited[pathSplited.length - 1];
-      console.log(searchParams);
-      path = `${pathSplited[0]}searchParams`;
-    }
-
-    this.routers[path] = {
+    this.routers[params?.pathname || path] = {
       method: "GET",
       func,
-      searchParams,
+      searchParams: params || null,
       middleware,
     };
   }
 
   post(
     path: string,
-    func: (request: Request) => Response,
-    middleware?: (req: Request, next: () => Response) => Response,
+    func: (request: BlackRequest) => Response,
+    middleware?: (req: BlackRequest, next: () => Response) => Response,
   ) {
-    this.routers[path] = {
+    const params = setParams(path)
+
+    this.routers[params?.pathname || path] = {
       method: "POST",
       func,
-      searchParams: [this.getSearchParams(path)],
+      
       middleware,
     };
   }
 
   patch(
     path: string,
-    func: (request: Request) => Response,
-    middleware?: (req: Request, next: () => Response) => Response,
+    func: (request: BlackRequest) => Response,
+    middleware?: (req: BlackRequest, next: () => Response) => Response,
   ) {
-    this.routers[path] = {
+    const params = setParams(path)
+
+    this.routers[params?.pathname || path] = {
       method: "PATCH",
       func,
-      searchParams: [this.getSearchParams(path)],
+      
       middleware,
     };
   }
 
   put(
     path: string,
-    func: (request: Request) => Response,
-    middleware?: (req: Request, next: () => Response) => Response,
+    func: (request: BlackRequest) => Response,
+    middleware?: (req: BlackRequest, next: () => Response) => Response,
   ) {
-    this.routers[path] = {
+    const params = setParams(path)
+
+    this.routers[params?.pathname || path] = {
       method: "PUT",
       func,
-      searchParams: [this.getSearchParams(path)],
       middleware,
     };
   }
 
   delete(
     path: string,
-    func: (request: Request) => Response,
-    middleware?: (req: Request, next: () => Response) => Response,
+    func: (request: BlackRequest) => Response,
+    middleware?: (req: BlackRequest, next: () => Response) => Response,
   ) {
-    this.routers[path] = {
+    const params = setParams(path)
+
+    this.routers[params?.pathname || path] = {
       method: "DELETE",
       func,
-      searchParams: [this.getSearchParams(path)],
       middleware,
     };
   }
