@@ -1,8 +1,6 @@
 import type { BlackRequest, RouteType, RouterParam } from "../@type/type";
 import { setParams } from "./setParams";
 
-
-
 export class BlackRouter {
   protected routers: RouteType = {};
 
@@ -24,7 +22,7 @@ export class BlackRouter {
     func: (request: BlackRequest) => Response,
     middleware?: (req: BlackRequest, next: () => Response) => Response,
   ) {
-    const params = setParams(path)
+    const params = setParams(path);
 
     this.routers[params?.pathname || path] = {
       method: "GET",
@@ -39,12 +37,12 @@ export class BlackRouter {
     func: (request: BlackRequest) => Response,
     middleware?: (req: BlackRequest, next: () => Response) => Response,
   ) {
-    const params = setParams(path)
+    const params = setParams(path);
 
     this.routers[params?.pathname || path] = {
       method: "POST",
       func,
-      
+
       middleware,
     };
   }
@@ -54,12 +52,12 @@ export class BlackRouter {
     func: (request: BlackRequest) => Response,
     middleware?: (req: BlackRequest, next: () => Response) => Response,
   ) {
-    const params = setParams(path)
+    const params = setParams(path);
 
     this.routers[params?.pathname || path] = {
       method: "PATCH",
       func,
-      
+
       middleware,
     };
   }
@@ -69,7 +67,7 @@ export class BlackRouter {
     func: (request: BlackRequest) => Response,
     middleware?: (req: BlackRequest, next: () => Response) => Response,
   ) {
-    const params = setParams(path)
+    const params = setParams(path);
 
     this.routers[params?.pathname || path] = {
       method: "PUT",
@@ -83,7 +81,7 @@ export class BlackRouter {
     func: (request: BlackRequest) => Response,
     middleware?: (req: BlackRequest, next: () => Response) => Response,
   ) {
-    const params = setParams(path)
+    const params = setParams(path);
 
     this.routers[params?.pathname || path] = {
       method: "DELETE",
