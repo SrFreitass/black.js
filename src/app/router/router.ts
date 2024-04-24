@@ -3,9 +3,7 @@ import getBookController from "../controller/getBook.controller";
 
 class Router {
   execute(route: RouterParam) {
-    route.get("/book/:id", getBookController.execute, (req, next) => {
-      return next();
-    });
+    route.get("/book/:id", getBookController.execute);
   }
 }
 

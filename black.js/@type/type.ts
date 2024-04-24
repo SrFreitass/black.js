@@ -6,8 +6,11 @@ export interface BlackRequest extends Request {
 
 export type paramsMethod = (
   path: string,
-  func: (request: BlackRequest) => Response,
-  middleware?: ((req: Request, next: () => Response) => Response) | undefined,
+  func: (request: BlackRequest) => Promise<Response> | Response,
+  middleware?: (
+    req: BlackRequest,
+    next: () => Promise<Response> | Response,
+  ) => Promise<Response> | Response,
 ) => void;
 
 export type RouterParam = {
@@ -18,16 +21,18 @@ export type RouterParam = {
   put: paramsMethod;
 };
 
-
 export type RouteType = Record<
-string,
-{
-  method: string;
-  func: (request: BlackRequest) => Response;
-  middleware?: (req: BlackRequest, next: () => Response) => Response;
-  searchParams?: {
-    params: string;
-    pathname: string;
-  } | null;
-}
->
+  string,
+  {
+    method: string;
+    func: (request: BlackRequest) => Promise<Response> | Response;
+    middleware?: (
+      req: BlackRequest,
+      next: () => Promise<Response> | Response,
+    ) => Promise<Response> | Response;
+    searchParams?: {
+      params: string;
+      pathname: string;
+    } | null;
+  }
+>;

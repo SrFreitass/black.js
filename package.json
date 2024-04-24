@@ -8,12 +8,14 @@
   "devDependencies": {
     "@freitasdev/eslint-config": "^2.1.0",
     "@types/bun": "latest",
-    "@types/figlet": "^1.5.8"
+    "@types/figlet": "^1.5.8",
+    "@types/pg": "^8.11.5"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "figlet": "^1.7.0"
+    "figlet": "^1.7.0",
+    "pg": "^8.11.5"
   }
 }

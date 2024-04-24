@@ -19,8 +19,11 @@ export class BlackRouter {
 
   get(
     path: string,
-    func: (request: BlackRequest) => Response,
-    middleware?: (req: BlackRequest, next: () => Response) => Response,
+    func: (request: BlackRequest) => Promise<Response> | Response,
+    middleware?: (
+      req: BlackRequest,
+      next: () => Promise<Response> | Response,
+    ) => Promise<Response> | Response,
   ) {
     const params = setParams(path);
 
@@ -34,38 +37,45 @@ export class BlackRouter {
 
   post(
     path: string,
-    func: (request: BlackRequest) => Response,
-    middleware?: (req: BlackRequest, next: () => Response) => Response,
+    func: (request: BlackRequest) => Promise<Response> | Response,
+    middleware?: (
+      req: BlackRequest,
+      next: () => Promise<Response> | Response,
+    ) => Promise<Response> | Response,
   ) {
     const params = setParams(path);
 
     this.routers[params?.pathname || path] = {
       method: "POST",
       func,
-
       middleware,
     };
   }
 
   patch(
     path: string,
-    func: (request: BlackRequest) => Response,
-    middleware?: (req: BlackRequest, next: () => Response) => Response,
+    func: (request: BlackRequest) => Promise<Response> | Response,
+    middleware?: (
+      req: BlackRequest,
+      next: () => Promise<Response> | Response,
+    ) => Promise<Response> | Response,
   ) {
     const params = setParams(path);
 
     this.routers[params?.pathname || path] = {
       method: "PATCH",
       func,
-
       middleware,
     };
   }
 
   put(
     path: string,
-    func: (request: BlackRequest) => Response,
-    middleware?: (req: BlackRequest, next: () => Response) => Response,
+    func: (request: BlackRequest) => Promise<Response> | Response,
+    middleware?: (
+      req: BlackRequest,
+      next: () => Promise<Response> | Response,
+    ) => Promise<Response> | Response,
   ) {
     const params = setParams(path);
 
@@ -78,8 +88,11 @@ export class BlackRouter {
 
   delete(
     path: string,
-    func: (request: BlackRequest) => Response,
-    middleware?: (req: BlackRequest, next: () => Response) => Response,
+    func: (request: BlackRequest) => Promise<Response> | Response,
+    middleware?: (
+      req: BlackRequest,
+      next: () => Promise<Response> | Response,
+    ) => Promise<Response> | Response,
   ) {
     const params = setParams(path);
 
